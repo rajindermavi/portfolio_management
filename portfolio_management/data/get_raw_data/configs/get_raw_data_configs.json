@@ -1,0 +1,22 @@
+{
+ "fred":{ 
+         "series_collection":["TEDRATE","T10YIE","DPRIME","UNRATE","VIXCLS",  
+                  "PPIACO","CPIAUCSL","NASDAQ100","SP500","GDP"],
+         "start":"2020-01-01",
+         "end":"2021-01-01" 
+         },
+ "yahoo":{
+          "symbols":["AAPL","AMZN","CVX","DIS",
+                   "GE","GS","HD","HON","IBM","INTC",
+                   "JNJ","LOW","MMM","MSFT","NEE","NKE",
+                   "NVDA","PEP","SBUX","WFC","WMT"],
+          "start_date":"2000-01-01",
+          "end_date":"2021-01-01",
+          "freq":"daily"
+          },
+ "nyt":{
+        "url":"http://api.nytimes.com/svc/archive/v1/",
+        "year_start":2020,
+        "year_end":2020
+        }
+}
