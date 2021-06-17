@@ -27,14 +27,16 @@ class Model(tf.keras.Model):
                                      kernel_size_1,
                                      name='conv1',
                                      padding='valid',
-                                     activation='relu')
+                                     activation='relu',
+                                     kernel_initializer = 'glorot_normal')
         filters_2 = 20
         kernel_size_2 = (1,self.window_size-2)
         self.conv_layer_2 = layers.Conv2D(filters_2,
                                      kernel_size_2,
                                      name='conv2',
                                      padding='valid',
-                                     activation='relu')
+                                     activation='relu',
+                                     kernel_initializer = 'glorot_normal')
          
         #w_ = tf.expand_dims(tf.convert_to_tensor(w),axis =0)
         self.concat_layer_1 = layers.Concatenate(axis=3,
@@ -47,13 +49,17 @@ class Model(tf.keras.Model):
                                      padding='valid',
                                      activation='relu') 
         
-        self.concat_layer_2 = layers.Concatenate(axis=1,
-                                                 name='conc2')
+        #self.concat_layer_2 = layers.Concatenate(axis=1,
+        #                                         name='conc2')
         self.flatten = layers.Flatten()
 
-        self.output_layer = layers.Softmax()
+        self.weighted_vec1 = ScaleLayer()
+        self.weighted_vec2 = ScaleLayer()
+        self.average_layer = layers.Average()
+        self.softmax_layer = layers.Softmax()
 
-    def call(self,input_data):
+
+    def call(self,input_data,last_action):
         batch_size = input_data.shape[0]
         w = np.array(batch_size*[self._w])
         cash_bias = np.array(batch_size*[self.cash_bias])
@@ -65,30 +71,34 @@ class Model(tf.keras.Model):
             print('first concat')
             print(x)
         x = self.conv_layer_3(x)
-        #x = tf.Variable(self.concat_layer_2([cash_bias,x]))
-        if self.debug:
-            print('second concat')
-            print(x)
         x = self.flatten(x)
-        if self.debug:
-            print('flatten')
-            print(x)
-        return self.output_layer(x)
-        
+        y1 = self.weighted_vec1(x)
+        y2 = self.weighted_vec2(last_action)
+        x = self.average_layer([y1,y2])
+        #x = tf.Variable(self.concat_layer_2([cash_bias,x]))
 
+        return self.softmax_layer(x)
+        
+class ScaleLayer(layers.Layer):
+    def __init__(self):
+      super(ScaleLayer, self).__init__()
+      self.scale = tf.Variable(1.)
+
+    def call(self, inputs):
+      return inputs * self.scale
 
 
 class Agent():
     def __init__(self,n_stocks,n_stock_feats,window_size=64, gamma = 0.99):
-        self.n_portfolio = n_stocks + 1
-        self.clip_pram = 0.2
-        self.gamma = gamma
+        #self.n_portfolio = n_stocks + 1
+        #self.clip_pram = 0.2
+        #self.gamma = gamma
         self.opt = optimizers.RMSprop(learning_rate=1e-2) 
         self.model = Model(n_stocks,n_stock_feats,window_size=window_size) 
 
           
-    def act(self,obs):
-        action = self.model(np.array([obs]))
+    def act(self,obs,last_action):
+        action = self.model(tf.convert_to_tensor([obs]),last_action)
         #action = action.numpy() 
         return action
  
@@ -145,7 +155,11 @@ class Agent():
 
         return loss
 
-def preprocess(states, actions, rewards, dones, values, gamma):
+def batch_training_data(stock_data,batch_size):
+
+    batches = []
+
+
     g = 0
     lmbda = 0.95
     returns = []

@@ -22,8 +22,7 @@ class TradingEnv(gym.Env):
     metadata = {'render.modes': ['human']}
     def __init__(self,stock_data,
                  window_size=64,trading_cost=1e-4,
-                 interest_rate=1e-5,portfolio_value=1e6,
-                 training_size=.8):
+                 interest_rate=1e-5,portfolio_value=1e6):
         
         #data
         self.stock_data = tf.convert_to_tensor(stock_data,
@@ -48,7 +47,7 @@ class TradingEnv(gym.Env):
 
         #episode
         self._start_tick = self.window_size-1
-        self._end_tick = int(self.total_data*training_size)
+        self._end_tick = int(self.total_data) -1
         self._episode_length = self._end_tick - self.window_size
 
         self._done = False
