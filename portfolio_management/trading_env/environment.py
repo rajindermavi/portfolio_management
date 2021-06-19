@@ -1,8 +1,6 @@
 
 import gym
 from gym import spaces
-#from gym.utils import seeding
-#import pandas as pd
 import numpy as np
 import tensorflow as tf
 
@@ -93,7 +91,7 @@ class TradingEnv(gym.Env):
         self._idx = self._start_tick
         self._portfolio = self._initial_portfolio
         self._portfolio_value = self._initial_portfolio_value
-        self._portfolio_weights = self._portfolio_weight_eval()
+        self._portfolio_weights = self._portfolio/self._portfolio_value  
         self.portfolio_value_hist = [self._initial_portfolio_value]
         self.rewards_hist = [0]
 
@@ -145,12 +143,6 @@ class TradingEnv(gym.Env):
 
         return self._get_observation(), reward, self._done, info
 
-    def _portfolio_weight_eval(self):
-        '''
-        Returns the weight vector of the current portfolio.
-        '''
-        return self._portfolio/self._portfolio_value  
-
     def _get_observation(self):    
         '''
         Return window of normalized stock data and current econ data.
@@ -166,8 +158,3 @@ class TradingEnv(gym.Env):
         #econ_data = self.econ_data[self._idx]
         #econ_data = self.econ_data[0]
         return X#, econ_data
-
-
-
-
-
