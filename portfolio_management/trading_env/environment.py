@@ -25,6 +25,14 @@ class TradingEnv(gym.Env):
         #data
         self.stock_data = tf.convert_to_tensor(stock_data,
                                             dtype=np.float32)
+        # Data has dimensions:
+        # 0: Stocks
+        # 1: Time series
+        # 2: Features: (high, low, open, close)
+
+        # Use closing prices for trading values:
+        self.price_idx = -1
+
         #parameters
         self.window_size=window_size
         self.trading_cost=trading_cost
@@ -105,7 +113,7 @@ class TradingEnv(gym.Env):
         Reward is defined as the log return of the porfolio.
         '''
         # prestep values 
-        prices_prestep = tf.convert_to_tensor([self.stock_data[:,self._idx,0]])
+        prices_prestep = tf.convert_to_tensor([self.stock_data[:,self._idx,self.price_idx]])
         prestep_portfolio_value = self._portfolio_value
         w_prestep = self._portfolio_weights
 
@@ -123,7 +131,7 @@ class TradingEnv(gym.Env):
             self._done = True
 
         #poststep values 
-        prices_poststep = tf.convert_to_tensor([self.stock_data[:,self._idx,0]])
+        prices_poststep = tf.convert_to_tensor([self.stock_data[:,self._idx,self.price_idx]])
 
         # value / weight evolution
         y_evol = prices_poststep/prices_prestep

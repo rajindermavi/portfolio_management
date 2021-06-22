@@ -6,10 +6,9 @@ from tensorflow.python.ops.clip_ops import clip_by_norm
 import tensorflow_probability as tfp
 
 class Model(tf.keras.Model):
-    def __init__(self,n_stocks,n_stock_feats,window_size=64,debug=False):
+    def __init__(self,n_stocks,n_stock_feats,window_size=64):
         super().__init__(self)
         
-        self.debug=debug
         self.n_stocks = n_stocks
         self.n_stock_feats = n_stock_feats
         self.window_size = window_size 
@@ -76,7 +75,6 @@ class Model(tf.keras.Model):
         y2 = self.weighted_vec2(last_raw_action)
         x = self.average_layer([y1,y2])
         return x
-        #return self.softmax_layer(x)
         
 class ScaleLayer(layers.Layer):
     def __init__(self):
@@ -87,10 +85,9 @@ class ScaleLayer(layers.Layer):
         return inputs * self.scale
  
 class Agent():
-    def __init__(self,n_stocks,n_stock_feats,window_size=64, gamma = 0.99):
-        #self.n_portfolio = n_stocks + 1
-        #self.clip_pram = 0.2
-        #self.gamma = gamma
+    def __init__(self,n_stocks,n_stock_feats,window_size=64):
+
+
         self.ls = optimizers.schedules.PolynomialDecay(5e-2,100,
                                                        end_learning_rate=1e-3,
                                                        power=1.5)
@@ -100,5 +97,4 @@ class Agent():
           
     def act(self,obs,last_action):
         action = self.model(tf.convert_to_tensor([obs]),last_action)
-        #action = action.numpy() 
         return action
