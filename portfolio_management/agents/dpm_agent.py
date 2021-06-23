@@ -88,8 +88,8 @@ class Agent():
     def __init__(self,n_stocks,n_stock_feats,window_size=64):
 
 
-        self.ls = optimizers.schedules.PolynomialDecay(5e-2,100,
-                                                       end_learning_rate=1e-3,
+        self.ls = optimizers.schedules.PolynomialDecay(1e-2,100,
+                                                       end_learning_rate=1e-4,
                                                        power=1.5)
         self.opt = optimizers.RMSprop(learning_rate=self.ls,clipnorm=1.0) 
         self.model = Model(n_stocks,n_stock_feats,window_size=window_size) 
