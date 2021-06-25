@@ -88,7 +88,7 @@ class Agent():
     def __init__(self,n_stocks,n_stock_feats,window_size=64):
 
 
-        self.ls = optimizers.schedules.PolynomialDecay(1e-2,100,
+        self.ls = optimizers.schedules.PolynomialDecay(5e-2,100,
                                                        end_learning_rate=1e-4,
                                                        power=1.5)
         self.opt = optimizers.RMSprop(learning_rate=self.ls,clipnorm=1.0) 
@@ -98,3 +98,17 @@ class Agent():
     def act(self,obs,last_action):
         action = self.model(tf.convert_to_tensor([obs]),last_action)
         return action
+
+def dpm_loss(env,agent,n_stocks):
+    total_loss = tf.convert_to_tensor(0.0)
+    obs = env.reset()
+    done = False
+    last_raw_action = tf.zeros((1,n_stocks+1))
+    while not done:
+
+        raw_action=agent.act(obs,last_raw_action)
+        obs,reward,done,_=env.step(agent.model.softmax_layer(raw_action))
+        last_raw_action=raw_action
+        total_loss-=reward
+
+    return total_loss       
