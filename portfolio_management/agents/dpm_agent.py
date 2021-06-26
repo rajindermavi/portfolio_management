@@ -84,31 +84,20 @@ class ScaleLayer(layers.Layer):
     def call(self, inputs):
         return inputs * self.scale
  
-class Agent():
+class DPM_Agent():
     def __init__(self,n_stocks,n_stock_feats,window_size=64):
 
 
-        self.ls = optimizers.schedules.PolynomialDecay(3e-2,100,
+        self.ls = optimizers.schedules.PolynomialDecay(1e-1,100,
                                                        end_learning_rate=1e-4,
                                                        power=1.5)
         self.opt = optimizers.RMSprop(learning_rate=self.ls,clipnorm=1.0) 
         self.model = Model(n_stocks,n_stock_feats,window_size=window_size) 
 
           
-    def act(self,obs,last_action):
-        action = self.model(tf.convert_to_tensor([obs]),last_action)
-        return action
-
-def dpm_loss(env,agent,n_stocks):
-    total_loss = tf.convert_to_tensor(0.0)
-    obs = env.reset()
-    done = False
-    last_raw_action = tf.zeros((1,n_stocks+1))
-    while not done:
-
-        raw_action=agent.act(obs,last_raw_action)
-        obs,reward,done,_=env.step(agent.model.softmax_layer(raw_action))
-        last_raw_action=raw_action
-        total_loss-=reward
-
-    return total_loss       
+    def act(self,*args):
+        obs = args[0]
+        last_action = args[1]
+        raw_action = self.model(tf.convert_to_tensor([obs]),last_action)
+        action = self.model.softmax_layer(raw_action)
+        return action, raw_action

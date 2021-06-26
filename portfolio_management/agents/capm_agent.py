@@ -1,4 +1,5 @@
 import numpy as np
+import tensorflow as tf
 
 from scipy.optimize import LinearConstraint
 from scipy.optimize import minimize
@@ -10,7 +11,8 @@ class CAPM_Agent():
         self.n_stocks = n_stocks
         self.r = risk_free_rate
 
-    def act(self,obs):
+    def act(self,*args):
+        obs = args[0]
 
         K = ((obs[:-1,1:,-1] - obs[:-1,:-1,-1])/obs[:-1,:-1,-1])
         self.Sigma = np.cov(K)
@@ -24,9 +26,14 @@ class CAPM_Agent():
 
         res = minimize(self.market_portfolio_obj_fun,
                         w0, constraints=[eq,ineq])
+        action = np.concatenate([res['x'],[0]])
+        action = tf.convert_to_tensor([action],dtype=tf.float32)
+        # Raw action is non-functional for this agent
+        raw_action = tf.zeros((1,self.n_stocks+1))
 
-        return np.where(res['x']<0,0,res['x']).round(3)
+        return action, raw_action
 
+        return 
 
     def market_portfolio_obj_fun(self,w):
         num = np.dot(w,self.mu) - self.r
