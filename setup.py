@@ -25,4 +25,7 @@ setup(
     author_email='rsmavi.hb@gmail.com',  
     license='MIT',
     packages=[],
+    install_requires=[
+        'pypandoc>=1.5'
+    ],
 )
