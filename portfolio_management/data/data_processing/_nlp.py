@@ -1,7 +1,6 @@
 from sentence_transformers import SentenceTransformer
-from singleton_decorator import singleton
+import pandas as pd
 
-@singleton
 class NLEncoding(): 
   
     def __init__(self):  

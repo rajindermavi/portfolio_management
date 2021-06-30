@@ -2,8 +2,7 @@
 import tensorflow as tf
 from tensorflow.keras import layers, losses, optimizers
 import numpy as np
-from tensorflow.python.ops.clip_ops import clip_by_norm
-import tensorflow_probability as tfp
+#from tensorflow.python.ops.clip_ops import clip_by_norm
 
 class Model(tf.keras.Model):
     def __init__(self,n_stocks,n_stock_feats,window_size=64):

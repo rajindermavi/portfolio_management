@@ -9,14 +9,21 @@ import get_raw_data
 import data_processing
 
 class GetArchive():
-    def __init__(self,get_all=True,to_save=True):
+    def __init__(self,datasets=['fred','yahoo','nyt'],to_save=True):
+        
+        self.fred_config,self.nyt_config,self.yf_config=None,None,None
         print('Loading configuration files.')
         self.load_configs()
         print('Creating archives.')
         self.archives()
         
-        if get_all: 
-            self.get_all()         
+        self.fred_data=None
+        self.nyt_data=None
+        self.yf_data=None
+
+
+        self.get_datasets(datasets) 
+             
              
     def load_configs(self):
         configs_file = './get_raw_data/configs/get_raw_data_configs.json'
@@ -38,14 +45,17 @@ class GetArchive():
         self.yf_archive = get_raw_data.GetYFArchive()
         self.nyt_archive = get_raw_data.GetNYTArchive(self.nyt_api)
         
-    def get_all(self):
+    def get_datasets(self,datasets):
         '''Uses config data to retrieve data from archives.'''
-        print("Getting FRED data.")
-        self.get_fred()
-        print("Getting Yahoo Financial data.")
-        self.get_yf()
-        print("Getting New York Times data.")
-        self.get_nyt() 
+        if 'fred' in datasets:
+            print("Getting FRED data.")
+            self.get_fred()
+        if 'yahoo' in datasets:
+            print("Getting Yahoo Financial data.")
+            self.get_yf()
+        if 'nyt' in datasets:
+            print("Getting New York Times data.")
+            self.get_nyt() 
         
     def get_fred(self,start=None,end=None,series_collection=None):
         start = self.fred_config['start']
@@ -106,26 +116,26 @@ class DataPrep:
 
 if __name__ == "__main__":
       
-    archive = GetArchive()
+    archive = GetArchive(datasets=['yahoo'])
     
     save_dir = './archive_data'
     Path(save_dir).mkdir(parents=True, exist_ok=True)
     #time = dt.datetime.now().strftime('%d%m%Y_%H%M')
-    
-    nyt_file = 'nyt_data.dill'
-    save_nyt = os.path.join(save_dir, nyt_file)
-    with open(save_nyt, "wb") as dill_file:
-        dill.dump(archive.nyt_data, dill_file)
-        
-    fred_file = 'fred_data.dill'
-    save_fred = os.path.join(save_dir, fred_file)
-    with open(save_fred, "wb") as dill_file:
-        dill.dump(archive.fred_data, dill_file)
-    
-    yf_file = 'yf_data.dill'
-    save_yf = os.path.join(save_dir, yf_file)
-    with open(save_yf, "wb") as dill_file:
-        dill.dump(archive.yf_data, dill_file)
+    if type(archive.nyt_data) == pd.DataFrame:
+        nyt_file = 'nyt_data.dill'
+        save_nyt = os.path.join(save_dir, nyt_file)
+        with open(save_nyt, "wb") as dill_file:
+            dill.dump(archive.nyt_data, dill_file)
+    if type(archive.fred_data)==pd.DataFrame:    
+        fred_file = 'fred_data.dill'
+        save_fred = os.path.join(save_dir, fred_file)
+        with open(save_fred, "wb") as dill_file:
+            dill.dump(archive.fred_data, dill_file)
+    if type(archive.yf_data)==pd.DataFrame:
+        yf_file = 'yf_data.dill'
+        save_yf = os.path.join(save_dir, yf_file)
+        with open(save_yf, "wb") as dill_file:
+            dill.dump(archive.yf_data, dill_file)
     
     
     
