@@ -9,4 +9,4 @@ from ._feature_engineering import force
 from ._feature_engineering import volume_ratio
 from ._feature_engineering import price_ratio
 
-from ._nlp import NLEncoding
+#from ._nlp import NLEncoding
