@@ -22,7 +22,7 @@ class MetaEnv():
         self.start_date=start_date
         self.end_date=end_date
         # Fetch data online as pandas DataFrame
-        self.yf_data=self.get_yf_data()
+        self.yf_data=self.get_yf_data() 
         # Convert dataframe to numpy array
         self.dates, self.yf_array=self.yf_data_to_array(self.yf_data)
         
@@ -30,7 +30,8 @@ class MetaEnv():
 
     def get_yf_data(self):
         yf=GetYFArchive()
-        return yf.get(self.start,self.end_date,self.symbols,'daily')
+        raw_data=yf.get(self.start_date,self.end_date,self.symbols,'daily')
+        return [raw_data[raw_data['Symbol']==symbol]for symbol in self.symbols]
 
     def yf_data_to_array(self,data):
         dates=data[0]['Date']
@@ -41,7 +42,7 @@ class AgentComparison():
     def __init__(self,symbols,start_date='2021-01-01',end_date='2021-06-01'):
 
         self.meta_env=MetaEnv(symbols,start_date,end_date)
-        self.n_stocks = self.meta_env.env.n_stocks
+        self.n_stocks = self.meta_env.env.n_stocks 
         self.meta_agent = MetaAgent(self.n_stocks)
 
         self.dpm_vals,self.uniform_vals,self.mvp_vals,self.capm_vals=self.simulate_agents()
@@ -53,21 +54,21 @@ class AgentComparison():
         _loss = agent_loss(self.meta_env.env,
                            self.meta_agent.dpm_agent,
                            self.n_stocks)
-        dpm_val_hist = self.meta_env.env.portfolio_value_hist[start_idx:]
+        dpm_val_hist = self.meta_env.env.portfolio_value_hist
 
         _loss = agent_loss(self.meta_env.env,
                            self.meta_agent.uniform_agent,
                            self.n_stocks)
-        uniform_val_hist = self.meta_env.env.portfolio_value_hist[start_idx:]
+        uniform_val_hist = self.meta_env.env.portfolio_value_hist
 
         _loss = agent_loss(self.meta_env.env,
                            self.meta_agent.mvp_agent,
                            self.n_stocks)
-        mvp_val_hist = self.meta_env.env.portfolio_value_hist[start_idx:]
+        mvp_val_hist = self.meta_env.env.portfolio_value_hist
 
         _loss = agent_loss(self.meta_env.env,
                            self.meta_agent.capm_agent,
                            self.n_stocks)
-        capm_val_hist = self.meta_env.env.portfolio_value_hist[start_idx:]
+        capm_val_hist = self.meta_env.env.portfolio_value_hist
 
         return dpm_val_hist,uniform_val_hist,mvp_val_hist,capm_val_hist
