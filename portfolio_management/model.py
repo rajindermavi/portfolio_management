@@ -3,6 +3,7 @@ from trading_env.environment import TradingEnv
 from data.get_raw_data import GetYFArchive
 import numpy as np
 import dill 
+import os
 
 class MetaAgent():
     def __init__(self,n_stocks):
@@ -10,7 +11,9 @@ class MetaAgent():
         self.create_agents()
 
     def create_agents(self): 
-        with open('dpm_agent.dill','rb') as dill_file:
+        dirname=os.path.dirname(__file__)
+        filename=os.path.join(dirname,'dpm_agent.dill')
+        with open(filename,'rb') as dill_file:
             self.dpm_agent = dill.load(dill_file)
         self.capm_agent = CAPM_Agent(self.n_stocks)
         self.mvp_agent = MVP_Agent(self.n_stocks)
@@ -39,7 +42,7 @@ class MetaEnv():
         return dates, array 
 
 class AgentComparison():
-    def __init__(self,symbols,start_date='2021-01-01',end_date='2021-06-01'):
+    def __init__(self,symbols,start_date='2019-06-01',end_date='2021-06-01'):
 
         self.meta_env=MetaEnv(symbols,start_date,end_date)
         self.n_stocks = self.meta_env.env.n_stocks 

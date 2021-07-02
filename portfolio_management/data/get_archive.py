@@ -2,6 +2,7 @@ import os
 import pandas as pd
 import dill
 import json
+import os
 import datetime as dt
 from pathlib import Path
 
@@ -26,14 +27,15 @@ class GetArchive():
              
              
     def load_configs(self):
-        configs_file = './get_raw_data/configs/get_raw_data_configs.json'
+        dirname=os.path.dirname(__file__)
+        configs_file = os.path.join(dirname,'get_raw_data','configs','get_raw_data_configs.json')
         with open(configs_file,'r') as cf:
             configs = json.load(cf)
             self.fred_config = configs['fred']
             self.yf_config = configs['yahoo']
             self.nyt_config = configs['nyt']
             
-        api_keys_file = "./get_raw_data/configs/api_keys.json"    
+        api_keys_file = os.path.join(dirname,'get_raw_data','configs','api_keys.json')    
         with open(api_keys_file,'r') as apis:
             keys = json.load(apis)
             self.fred_api = keys['fred']
