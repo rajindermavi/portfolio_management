@@ -36,6 +36,10 @@ class CAPM_Agent():
         return 
 
     def market_portfolio_obj_fun(self,w):
-        num = np.dot(w,self.mu) - self.r
-        denom =np.sqrt(np.matmul(np.matmul(w,self.Sigma),w))
+        if self.Sigma.shape == ():
+            num = w*self.mu-self.r
+            denom = np.sqrt(w*w*self.Sigma)
+        else:    
+            num = np.dot(w,self.mu) - self.r
+            denom =np.sqrt(np.matmul(np.matmul(w,self.Sigma),w))
         return -num/denom

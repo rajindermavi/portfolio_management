@@ -35,4 +35,7 @@ class MVP_Agent():
 
 
     def mvp_obj_fun(self,w): 
-        return np.sqrt(np.matmul(np.matmul(w,self.Sigma),w))
+        if self.Sigma.shape == ():
+            return np.sqrt(w*w*self.Sigma)
+        else:
+            return np.sqrt(np.matmul(np.matmul(w,self.Sigma),w))
