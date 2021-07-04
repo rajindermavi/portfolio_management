@@ -1,6 +1,6 @@
 from agents import agent_loss, CAPM_Agent, MVP_Agent, Uniform_Agent
 from trading_env.environment import TradingEnv
-from data.get_raw_data import GetYFArchive
+from data import GetYFArchive
 import numpy as np
 import dill 
 import os
