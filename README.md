@@ -1,4 +1,4 @@
 
+This branch of the repository is to implement a interactive app to demonstrate the performance of the deep portfolio management agent.
 
 
-Project to fetch stock price / economic data and run a RL bot to manage a portfolio.
