@@ -33,8 +33,6 @@ class CAPM_Agent():
 
         return action, raw_action
 
-        return 
-
     def market_portfolio_obj_fun(self,w):
         if self.Sigma.shape == ():
             num = w*self.mu-self.r
