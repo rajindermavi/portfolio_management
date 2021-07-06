@@ -1,7 +1,7 @@
 import streamlit as st
 import datetime 
 import plotly.graph_objects as go
-from model import AgentComparison
+from portfolio_management.model import AgentComparison
 
 
 def plot_histories(agents):
@@ -35,7 +35,7 @@ def main():
                    "GE","GS","HAS","HD","HON","HPQ","HUM","IBM","INTC",
                    "JNJ","LOW","MMM","MSFT","NEE","NKE",
                    "NVDA","PEP","PFE","SBUX","WFC","WMT"]
-    default_symbols = ["BSX","MMM","AMD","GE","WMT"]
+    default_symbols = ["AMD","BSX","GE","MMM","WMT"]
     symbols = st.multiselect(
              'Select symbols for your portfolio.',
              all_symbols,
