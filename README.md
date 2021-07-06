@@ -13,19 +13,19 @@ There are three branches associated to this repository:
 
 ## Details about the trading agents
 
-In training and validation simulations each agent is initialized with 1M in a cash account. On each trading day agents are provided with trading data (max,min,opening,closing prices) from the last 64 days and must select an investment strategy for the following day. The portfolio at each time step may be expressed as a vector
+In training and validation simulations each agent is initialized with 1M in a cash account. On each trading day agents are provided with trading data (max, min, opening, closing prices) from the last 64 days and must select an investment strategy for the following day. The portfolio at each time step may be expressed as a vector
 <p align="center">
 <img src="https://render.githubusercontent.com/render/math?math=X^{(t)}=\begin{pmatrix}X^{(t)}_0\\X^{(t)}_1\\\vdots\\X^{(t)}_d\end{pmatrix}.">
 </p>
- where the first $d$ values are investments in stocks and the final value is held in an account earning a risk free return of $1\%$ per year. The total value of the portfolio on each time step is
+where the first $d$ values are investments in stocks and the final value is held in an account earning a risk free return of $1\%$ per year. The total value of the portfolio on each time step is
 <p align="center">
 <img src="https://render.githubusercontent.com/render/math?math=V^{(t)}=\sum_{i=0}^dX^{(t)}_i.">
 </p> 
- The output of each agent is expressed in terms of the portfolio weight vector 
+The output of each agent (the daily investment strategy) is expressed in terms of the portfolio weight vector 
 <p align="center">
-<img src="https://render.githubusercontent.com/render/math?math=w^(t)=\begin{pmatrix}w^{(t)}_0\\\vdots\\w^{(t)}_d\end{pmatrix}=\frac{1}{V^{(t)}}(X^{(t)}_0,X^{(t)}_1,...,X^{(t)}_d)^T.">
+<img src="https://render.githubusercontent.com/render/math?math=w^{(t)}=\begin{pmatrix}w^{(t)}_0\\\vdots\\w^{(t)}_d\end{pmatrix}=\frac{1}{V^{(t)}}\begin{pmatrix}X^{(t)}_0\\X^{(t)}_1\\\vdots\\X^{(t)}_d\end{pmatrix}.">
 </p> 
- $$ w^(t) = (w^{(t)}_0,...,w^{(t)}_d)^T = \frac{1}{V^{(t)}}(X^{(t)}_0,X^{(t)}_1,...,X^{(t)}_d)^T .$$  
+
 
 ### Deep Portfolio Management
 
