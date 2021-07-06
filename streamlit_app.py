@@ -4,22 +4,22 @@ import plotly.graph_objects as go
 from portfolio_management.model import AgentComparison
 
 
-def plot_histories(agents):
-    start = agents.meta_env.env._start_tick
-    date_range=agents.meta_env.dates[start:]
+def plot_histories(agent_comp):
+    start = agent_comp.meta_env.env._start_tick
+    date_range=agent_comp.meta_env.dates[start:]
     fig = go.Figure()
+    #fig.add_trace(go.Scatter(x=date_range,
+    #                         y=agent_comp.dpm_vals,
+    #                         mode='lines',name='DeepPortfolio'))
     fig.add_trace(go.Scatter(x=date_range,
-                             y=agents.dpm_vals,
-                             mode='lines',name='DeepPortfolio'))
-    fig.add_trace(go.Scatter(x=date_range,
-                             y=agents.uniform_vals,
-                             mode='lines',name='Uniform'))
-    fig.add_trace(go.Scatter(x=date_range,
-                             y=agents.capm_vals,
+                             y=agent_comp.capm_vals,
                              mode='lines',name='CAPM'))
     fig.add_trace(go.Scatter(x=date_range,
-                             y=agents.mvp_vals,
+                             y=agent_comp.mvp_vals,
                              mode='lines',name='MVP'))
+    fig.add_trace(go.Scatter(x=date_range,
+                             y=agent_comp.uniform_vals,
+                             mode='lines',name='Uniform'))
                              
     return fig,date_range
 
@@ -45,9 +45,9 @@ def main():
         st.write('Please select at least one symbol')
     else:
         with st.spinner('Simulating portfolios...'):
-            agents = AgentComparison(symbols,start,end)
+            agent_comp = AgentComparison(symbols,start,end)
     
-        fig,date_range = plot_histories(agents) 
+        fig,date_range = plot_histories(agent_comp) 
         d_init = date_range.iloc[0].date().isoformat()
         d_final = date_range.iloc[-1].date().isoformat()
         
