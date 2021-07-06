@@ -5,3 +5,4 @@ plotly==5.1.0
 scipy==1.6.3
 streamlit==0.83.0
 tensorflow-cpu==2.5.0
+yahoofinancials==1.6
