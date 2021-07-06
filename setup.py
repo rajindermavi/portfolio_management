@@ -12,7 +12,7 @@ def readme():
 
 
 setup(
-    name='Stock Portfolio Management',
+    name='Deep Portfolio Management',
     version='0.1',
     description='Manages a portfolio of stocks using a deep reinforcement learning algorithm',
     long_description=readme(),
@@ -20,7 +20,7 @@ setup(
         'Programming Language :: Python :: 3',
     ],
     # Substitute <github_account> with the name of your GitHub account
-    url='https://github.com/rajindermavi/stock_portfolio_management',
+    url='https://github.com/rajindermavi/portfolio_management',
     author='Rajinder Mavi',   
     author_email='rsmavi.hb@gmail.com',  
     license='MIT',
