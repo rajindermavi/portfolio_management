@@ -23,7 +23,9 @@ where the first $d$ values are investments in stocks and the final value is held
 </p> 
 The output of each agent (the daily investment strategy) is expressed in terms of the portfolio weight vector 
 <p align="center">
-<img src="https://render.githubusercontent.com/render/math?math=w^{(t)}=\begin{pmatrix}w^{(t)}_0\\\vdots\\w^{(t)}_d\end{pmatrix}=\frac{1}{V^{(t)}}\begin{pmatrix}X^{(t)}_0\\X^{(t)}_1\\\vdots\\X^{(t)}_d\end{pmatrix}.">
+<img src="https://render.githubusercontent.com/render/math?math=w^{(t)}=\frac{1}{V^{(t)}}\begin{pmatrix}X^{(t)}_0\\X^{(t)}_1\\\vdots\\X^{(t)}_d\end{pmatrix}">,
+ i.e.  
+<img src="https://render.githubusercontent.com/render/math?math=w^{(t)}_j=\frac{1}{V^{(t)}}X^{(t)}_j.">
 </p> 
 
 
