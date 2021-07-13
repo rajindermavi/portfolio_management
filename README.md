@@ -7,7 +7,7 @@ There are three branches associated to this repository:
 
 * **main** - Exposition of the basic logic of the training of the reinforcement learning agent.
 
-* **interactive_implementation** - Implements an interactive streamlit app, the app allows users to select a date range and set of stocks.
+* **interactive_implementation** - Implements an interactive streamlit app, the app allows users to select a date range and set of stocks. [Give the interactive app a try.](https://mavi-portfolio-management.herokuapp.com/)
 
 * **pm_with_nlp** - (In progress) The goal of this branch is to incorporate news data to the deep portfolio management algorithm.
 
