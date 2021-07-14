@@ -47,7 +47,7 @@ The new portfolio weight vector is
 </p> 
 The single step reward is
 <p align="center">
-<img src="https://render.githubusercontent.com/render/math?math=r^{(t+1)}=\ln(V(t+1)/V(t)).">
+<img src="https://render.githubusercontent.com/render/math?math=r^{(t\+1)}=\ln(V(t+1)/V(t)).">
 </p> 
 The total reward for the episode is then
 <p align="center">
