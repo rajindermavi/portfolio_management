@@ -22,7 +22,7 @@ The first d values are risky securities and the final value represents a risk fr
 <p align="center">
 <img src="https://render.githubusercontent.com/render/math?math=X^{(t)}=\begin{pmatrix}X^{(t)}_0\\X^{(t)}_1\\\vdots\\X^{(t)}_d\end{pmatrix}.">
 </p>
-Each value <img src="https://render.githubusercontent.com/render/math?math=X_i^{(t)}"> is the cash value in the corresponding security. We constrain all holdings to be positive. The total value of the portfolio on time step t is
+Each value <p align="center"><img src="https://render.githubusercontent.com/render/math?math=X_i^{(t)}"></p> is the cash value in the corresponding security. We constrain all holdings to be positive. The total value of the portfolio on time step t is
 <p align="center">
 <img src="https://render.githubusercontent.com/render/math?math=V^{(t)}=\sum_{i=0}^dX^{(t)}_i.">
 </p> 
@@ -32,13 +32,26 @@ The output of each agent (the daily investment strategy) is expressed in terms o
 </p> 
 At the close of each trading day each agent refinances their portfolios yeilding an updated weight vector <img src="https://render.githubusercontent.com/render/math?math=\hat{w^{(t)}}."> A trading penalty is assessed proportional to the total volume of the trade
 <p align="center">
-<img src="https://render.githubusercontent.com/render/math?math=penalty=(10^{-4})V^{(t)}\|w^{(t)}-\hat{w^{(t)}}\|_1.">
+<img src="https://render.githubusercontent.com/render/math?math=penalty=(10^{-4})V^{(t)}\|w^{(t)}-\hat{w}^{(t)}\|_1.">
 </p> 
-The closing value of the porfolio on day t is then <img src="https://render.githubusercontent.com/render/math?math=\hat{V(t)}=V^{(t)}-penalty."> 
+The closing value of the porfolio on day t is then 
+<p align="center"><img src="https://render.githubusercontent.com/render/math?math=\hat{V}^{(t)}=V^{(t)}-penalty."> </p>
 
 We then allow trading on day t+1 to occur and subsequently recalculate the portfolio positions as follows. The evolution of the porfolio value is calculated as
 <p align="center">
-<img src="https://render.githubusercontent.com/render/math?math=\frac{V(t+1)}{\hat{V(t)}}=(Z^{(t+1)}{\oslash}Z^{(t)}){\cdot}w^{(t)}.">
+<img src="https://render.githubusercontent.com/render/math?math=\frac{V(t+1)}{\hat{V}(t)}=(Z^{(t+1)}{\oslash}Z^{(t)}){\cdot}\hat{w}^{(t)}.">
+</p> 
+The new portfolio weight vector is 
+<p align="center">
+<img src="https://render.githubusercontent.com/render/math?math=w^{(t+1)}=\frac{\hat{V}(t)}{V(t+1)}(Z^{(t+1)}{\oslash}Z^{(t)}){\odot}\hat{w}^{(t)}.">
+</p> 
+The single step reward is
+<p align="center">
+<img src="https://render.githubusercontent.com/render/math?math=r^{(t+1)}=\ln(V(t+1)/V(t)).">
+</p> 
+The total reward for the episode is then
+<p align="center">
+<img src="https://render.githubusercontent.com/render/math?math=r=\sum_tr^{(t)}.">
 </p> 
 
 ### Deep Portfolio Management
