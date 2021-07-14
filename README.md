@@ -39,15 +39,15 @@ The closing value of the porfolio on day t is then
 
 We then allow trading on day t+1 to occur and subsequently recalculate the portfolio positions as follows. The evolution of the porfolio value is calculated as
 <p align="center">
-<img src="https://render.githubusercontent.com/render/math?math=\frac{V(t+1)}{\hat{V}(t)}=(Z^{(t+1)}{\oslash}Z^{(t)}){\cdot}\hat{w}^{(t)}.">
+<img src="https://render.githubusercontent.com/render/math?math=\frac{V(t+1)}{\hat{V}(t)}=(Z^{(t%2B1)}{\oslash}Z^{(t)}){\cdot}\hat{w}^{(t)}.">
 </p> 
 The new portfolio weight vector is 
 <p align="center">
-<img src="https://render.githubusercontent.com/render/math?math=w^{(t+1)}=\frac{\hat{V}(t)}{V(t+1)}(Z^{(t+1)}{\oslash}Z^{(t)}){\odot}\hat{w}^{(t)}.">
+<img src="https://render.githubusercontent.com/render/math?math=w^{(t%2B1)}=\frac{\hat{V}(t)}{V(t%2B1)}(Z^{(t%2B1)}{\oslash}Z^{(t)}){\odot}\hat{w}^{(t)}.">
 </p> 
 The single step reward is
 <p align="center">
-<img src="https://render.githubusercontent.com/render/math?math=r^{(t\+1)}=\ln(V(t+1)/V(t)).">
+<img src="https://render.githubusercontent.com/render/math?math=r^{(t%2B1)}=\ln(V(t%2B1)/V(t)).">
 </p> 
 The total reward for the episode is then
 <p align="center">
