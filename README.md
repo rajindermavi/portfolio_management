@@ -30,7 +30,7 @@ The output of each agent (the daily investment strategy) is expressed in terms o
 <p align="center">
 <img src="https://render.githubusercontent.com/render/math?math=w^{(t)}=\frac{1}{V^{(t)}}\begin{pmatrix}X^{(t)}_0\\X^{(t)}_1\\\vdots\\X^{(t)}_d\end{pmatrix}.">
 </p> 
-At the close of each trading day each agent refinances their portfolios yeilding an updated weight vector <img src="https://render.githubusercontent.com/render/math?math=\hat{w^{(t)}}."> A trading penalty is assessed proportional to the total volume of the trade
+At the close of each trading day each agent refinances their portfolios yeilding an updated weight vector <img src="https://render.githubusercontent.com/render/math?math=\hat{w}^{(t)}."> A trading penalty is assessed proportional to the total volume of the trade
 <p align="center">
 <img src="https://render.githubusercontent.com/render/math?math=penalty=(10^{-4})V^{(t)}\|w^{(t)}-\hat{w}^{(t)}\|_1.">
 </p> 
@@ -39,7 +39,7 @@ The closing value of the porfolio on day t is then
 
 We then allow trading on day t+1 to occur and subsequently recalculate the portfolio positions as follows. The evolution of the porfolio value is calculated as
 <p align="center">
-<img src="https://render.githubusercontent.com/render/math?math=\frac{V(t+1)}{\hat{V}(t)}=(Z^{(t%2B1)}{\oslash}Z^{(t)}){\cdot}\hat{w}^{(t)}.">
+<img src="https://render.githubusercontent.com/render/math?math=\frac{V(t%2B1)}{\hat{V}(t)}=(Z^{(t%2B1)}{\oslash}Z^{(t)}){\cdot}\hat{w}^{(t)}.">
 </p> 
 The new portfolio weight vector is 
 <p align="center">
@@ -56,3 +56,7 @@ The total reward for the episode is then
 
 ### Deep Portfolio Management
 
+This agent implements a version of the deep learning trading algorithm introduced in 
+The architecture of the model is illustrated in the following graphic.
+
+There are 3 convolutional layers with 2 ReLU activation layers and a softmax activation layer. In the 
