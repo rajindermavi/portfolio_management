@@ -187,7 +187,7 @@ class TradingEnv(gym.Env):
         #Normalize by timed prices:
         X = window_stock_data
         X = tf.transpose(X,(2,1,0))
-        X = X / X[0,0,:]
+        X = X / X[-1,0,:]
         X = tf.transpose(X,(2,1,0))
 
         #econ_data = self.econ_data[self._idx]
