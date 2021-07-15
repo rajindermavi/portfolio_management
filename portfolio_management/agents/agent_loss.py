@@ -1,10 +1,10 @@
 import tensorflow as tf
 
-def agent_loss(env,agent,n_stocks):
+def agent_loss(env,agent):
     total_loss = tf.convert_to_tensor(0.0)
     obs = env.reset()
     done = False 
-    last_raw_action = tf.zeros((1,n_stocks+1))
+    last_raw_action = tf.zeros((1,env.n_stocks+1))
     while not done:
         action,raw_action=agent.act(obs,last_raw_action)
         obs,reward,done,_=env.step(action)

@@ -2,7 +2,6 @@
 import tensorflow as tf
 from tensorflow.keras import layers, losses, optimizers
 import numpy as np
-#from tensorflow.python.ops.clip_ops import clip_by_norm
 
 class Model(tf.keras.Model):
     def __init__(self,n_stocks,n_stock_feats,window_size=64):
@@ -49,7 +48,7 @@ class Model(tf.keras.Model):
                                      padding='valid',
                                      activation='linear',
                                      kernel_initializer = 'he_normal') 
-        self.activation_layer_3 = layers.LeakyReLU(name='act3')
+
         
         self.flatten = layers.Flatten()
 
@@ -68,7 +67,6 @@ class Model(tf.keras.Model):
         x = self.activation_layer_2(x)
         x = self.batch_norm_layer_2(x)
         x = self.conv_layer_3(x)
-        x = self.activation_layer_3(x)
         x = self.flatten(x)
         y1 = self.weighted_vec1(x)
         y2 = self.weighted_vec2(last_raw_action)
@@ -87,10 +85,9 @@ class DPM_Agent():
     def __init__(self,n_stocks,n_stock_feats,window_size=64):
 
 
-        self.ls = optimizers.schedules.PolynomialDecay(1e-1,100,
-                                                       end_learning_rate=1e-4,
-                                                       power=1.5)
-        self.opt = optimizers.RMSprop(learning_rate=self.ls,clipnorm=1.0) 
+        self.ls = optimizers.schedules.PolynomialDecay(1e-2,1000,
+                                                       end_learning_rate=3e-5)
+        self.opt = optimizers.Adam(learning_rate=self.ls,clipnorm=1.0) 
         self.model = Model(n_stocks,n_stock_feats,window_size=window_size) 
 
           
