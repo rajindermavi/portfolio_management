@@ -17,7 +17,7 @@ In training and validation simulations each agent is initialized with 1M in a ca
 <p align="center">
 <img src="https://render.githubusercontent.com/render/math?math=Z^{(t)}=\begin{pmatrix}Z^{(t)}_0\\Z^{(t)}_1\\\vdots\\Z^{(t)}_d\end{pmatrix}.">
 </p>
-The first d values are risky securities and the final value represents a risk free investment, a cash account earning 1% interest per year.
+The first d values are risky securities and the final value represents a risk free investment, a cash account earning 2% interest per year.
  The portfolio at each time step may be expressed as a vector
 <p align="center">
 <img src="https://render.githubusercontent.com/render/math?math=X^{(t)}=\begin{pmatrix}X^{(t)}_0\\X^{(t)}_1\\\vdots\\X^{(t)}_d\end{pmatrix}.">
@@ -52,11 +52,12 @@ The single step reward is
 The total reward for the episode is then
 <p align="center">
 <img src="https://render.githubusercontent.com/render/math?math=r=\sum_tr^{(t)}.">
-</p> 
+</p>  
 
 ### Deep Portfolio Management
 
-This agent implements a version of the deep learning trading algorithm introduced in 
+This agent implements a version of the deep learning trading algorithm introduced in the paper [A Deep Reinforcement Learning Framework for the Financial Portfolio Management Problem](https://arxiv.org/abs/1706.10059).
+
 The architecture of the model is illustrated in the following graphic.
 ![Network Architecture](DPM_network_architecture.png)
 There are 3 convolutional layers with 2 ReLU activation layers and a softmax activation layer. 
