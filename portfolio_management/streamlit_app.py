@@ -78,8 +78,7 @@ def agent_simulation(agent_name,range_start,range_end,select_symbols):
     meta_agent = get_meta_agent(len(select_symbols))
 
     _loss = agent_loss(env,
-                       meta_agent.agent_dic[agent_name],
-                       len(select_symbols))
+                       meta_agent.agent_dic[agent_name])
     return env.portfolio_value_hist,trading_dates[env._start_tick:],env._portfolio_weights
 
 
@@ -109,9 +108,9 @@ def main():
                 The agent was trained on data from 36 stocks from Jan 2000 to Dec 2016.''')
     st.markdown('''**CAPM -- Capital Asset Pricing Model** uses recent stock price data to estimate the expected return $R$ and covariance $\Sigma$ for the collection of stocks. 
                    The agent then selects the portfolio weight $w$ maximizing
-                   the Sharpe ratio $(R - R_f)/(\sqrt{w^T\Sigma w})$ constrained to take long positions.''')
+                   the Sharpe ratio $(R - R_f)/(\sqrt{w^T\Sigma w})$ (constrained to take long positions and no investment in the risk free security).''')
     st.markdown('''**MVP -- Minimum Variance Portfolio** also uses recent stock price data to estimate the covariance of the collection of stocks.
-                   The agent then selects the portfolio minimizing the risk (variance) $w^T\Sigma w$ constrained to keep long positions (and no investments at the risk free rate).''')
+                   The agent then selects the portfolio minimizing the risk (variance) $w^T\Sigma w$ (constrained to take long positions and no investment in the risk free security).''')
     st.markdown('''**Uniform** rebalances each day to place equal value in each stock of the portfolio.''')
 
     # Create interactive components

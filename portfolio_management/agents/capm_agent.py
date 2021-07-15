@@ -6,7 +6,7 @@ from scipy.optimize import minimize
 
 
 class CAPM_Agent():
-    def __init__(self,n_stocks,risk_free_rate = 1e-4):
+    def __init__(self,n_stocks,risk_free_rate = 8e-5):
 
         self.n_stocks = n_stocks
         self.r = risk_free_rate
