@@ -58,7 +58,9 @@ The total reward for the episode is then
 
 This agent implements a version of the deep learning trading algorithm introduced in 
 The architecture of the model is illustrated in the following graphic.
-![Network Architecture](DPM_network_architechture.png)
+![Network Architecture](DPM_network_architecture.png)
 There are 3 convolutional layers with 2 ReLU activation layers and a softmax activation layer. 
 
 The input to the network is a 3 dimensional tensor with dimension (number of stocks) x (time) x (stock features). The features for each stock are the daily opening, closing, high, and low prices. For each trading day the tensor holding the previous 64 trading days is fed into the network. Each stock's data is normalized by the first day's closing value. 
+
+Note there are some minor differences from the paper version to the version implemented here. This version has 4 stock features rather than the 3 illustrated from the paper. The time window in this version is 64 trading periods rather than 50. The risk free security is incorporated into the input dataset rather than appending a cash bias on the last step. Before the softmax step, a weighted average of the current network output and the output from the previous timestep is performed -- rather than appending the previous timestep output to the final layer as in the image above.

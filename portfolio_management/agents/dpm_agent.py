@@ -85,7 +85,7 @@ class DPM_Agent():
     def __init__(self,n_stocks,n_stock_feats,window_size=64):
 
 
-        self.ls = optimizers.schedules.PolynomialDecay(1e-2,1000,
+        self.ls = optimizers.schedules.PolynomialDecay(2e-2,1000,
                                                        end_learning_rate=3e-5)
         self.opt = optimizers.Adam(learning_rate=self.ls,clipnorm=1.0) 
         self.model = Model(n_stocks,n_stock_feats,window_size=window_size) 
