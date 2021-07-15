@@ -9,18 +9,16 @@ class TradingEnv(gym.Env):
     '''
     Create trading environment our agent will interact with.
 
-    stocks: numpy array for stock data over time
-    state: numpy array for econ data over time
+    stocks: numpy array for stock data over time 
     window_size: number of past timeslots our agent has access to when making a trade decision.
-    trading_cost: cost for executing a trade
-    interest_rate: risk-free intrest rate
-    portfolio_value: initial value of portfolio
-    training_size: fraction of data used for training
+    trading_cost: cost for executing a trade (.25% commision per trade)
+    interest_rate: risk-free intrest rate (~ 2% per year)
+    portfolio_value: initial value of portfolio (1M)
     '''
     metadata = {'render.modes': ['human']}
     def __init__(self,stock_data,
-                 window_size=64,trading_cost=1e-4,
-                 interest_rate=1e-5,portfolio_value=1e6):
+                 window_size=64,trading_cost=2.5e-3,
+                 interest_rate=8e-5,portfolio_value=1e6):
         
         #data
         self.stock_data = tf.convert_to_tensor(stock_data,
