@@ -72,7 +72,7 @@ class Model(tf.keras.Model):
         y2 = self.weighted_vec2(last_raw_action)
         x = self.average_layer([y1,y2])
         return x
-        
+               
 class ScaleLayer(layers.Layer):
     def __init__(self):
         super(ScaleLayer, self).__init__()
@@ -97,3 +97,4 @@ class DPM_Agent():
         raw_action = self.model(tf.convert_to_tensor([obs]),last_action)
         action = self.model.softmax_layer(raw_action)
         return action, raw_action
+
