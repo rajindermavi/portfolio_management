@@ -4,15 +4,15 @@ from tensorflow.keras import layers, losses, optimizers
 import numpy as np
 
 class Model(tf.keras.Model):
-    def __init__(self,n_stocks,n_stock_feats,window_size=64):
+    def __init__(self,window_size=64):
         super().__init__(self)
         
-        self.n_stocks = n_stocks
-        self.n_stock_feats = n_stock_feats
+        #self.n_stocks = n_stocks
+        #self.n_stock_feats = n_stock_feats
         self.window_size = window_size 
 
         self.cash_bias = 0.5 * np.ones((1,1,1)) 
-        self._w = np.zeros((n_stocks,1,1)) 
+        #self._w = np.zeros((n_stocks,1,1)) 
 
         self.build_layers()
 
@@ -82,13 +82,14 @@ class ScaleLayer(layers.Layer):
         return inputs * self.scale
  
 class DPM_Agent():
-    def __init__(self,n_stocks,n_stock_feats,window_size=64):
+    name = "DPM_Agent"
+    def __init__(self,window_size=64):
 
 
         self.ls = optimizers.schedules.PolynomialDecay(2e-2,1000,
                                                        end_learning_rate=3e-5)
         self.opt = optimizers.Adam(learning_rate=self.ls,clipnorm=1.0) 
-        self.model = Model(n_stocks,n_stock_feats,window_size=window_size) 
+        self.model = Model(window_size=window_size) 
 
           
     def act(self,*args):

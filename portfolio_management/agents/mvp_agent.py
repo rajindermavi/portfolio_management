@@ -6,13 +6,16 @@ from scipy.optimize import minimize
 
 
 class MVP_Agent():
-    def __init__(self,n_stocks):
+    name = "MVP_Agent"
+    def __init__(self):
 
-        self.n_stocks = n_stocks 
+        self.n_stocks = None
         self.Simga = None
 
     def act(self,*args):
         obs = args[0]
+
+        self.n_stocks = obs.shape[0] - 1
 
         K = ((obs[:-1,1:,-1] - obs[:-1,:-1,-1])/obs[:-1,:-1,-1])
         self.Sigma = np.cov(K)

@@ -1,10 +1,15 @@
 import numpy as np
 import tensorflow as tf
 class Uniform_Agent():
-    def __init__(self,n_stocks):
-        self.n_stocks = n_stocks
+    name = "Uniform_Agent"
+    def __init__(self):
+        self.n_stocks = None
 
     def act(self,*args):
+
+        obs = args[0]
+
+        self.n_stocks = obs.shape[0] - 1
 
         Ones = np.ones(self.n_stocks+1)
         action = tf.convert_to_tensor([Ones/Ones.sum()],dtype=tf.float32)
