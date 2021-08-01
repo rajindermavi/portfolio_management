@@ -65,3 +65,45 @@ There are 3 convolutional layers with 2 ReLU activation layers and a softmax act
 The input to the network is a 3 dimensional tensor with dimension (number of stocks) x (time) x (stock features). The features for each stock are the daily opening, closing, high, and low prices. For each trading day the tensor holding the previous 64 trading days is fed into the network. Each stock's data is normalized by the first day's closing value. 
 
 Note there are some minor differences from the paper version to the version implemented here. This version has 4 stock features rather than the 3 illustrated from the paper. The time window in this version is 64 trading periods rather than 50. The risk free security is incorporated into the input dataset rather than appending a cash bias on the last step. Before the softmax step, a weighted average of the current network output and the output from the previous timestep is performed -- rather than appending the previous timestep output to the final layer as in the image above.
+
+#### Training
+For the sake of stability, we utilize a mollified reward function
+<p align="center">
+<img src="https://render.githubusercontent.com/render/math?math=r=\sum_t\gamma^tr^{(t)}\hspace{1in}\gamma=0.999.">
+</p>  
+A custom training loop is implemented using TensorFlow's GradientTape method and Adam optimizer with negative of the reward as the loss function. To prevent overtraining, a custom call back method breaks training when the performance on the validation set ceases to improve or degrades.
+
+###### __Batching and Subsampling__
+Overfitting is a key pitfall in maching learning. Aside from the standard callback discussed above, an extra precaution suited to the nature of the present training process is helpful. Data is gathered from n = 36 stocks over a period of years (2000 - 2020). The 2000 - 2018 data is used for training, the 2019 data is used for validation, and the 2020 data is used for testing. The training data is partitioned into 40 training episodes. For every epoch and episode a random subset of k = 10 stocks is selected for training. This is to avoid overfitting to the gains or losses of a particular stock over a particular period.
+
+###### __Performance__
+In a similar vein, the performance on the validation set is measured by backtesting a random subset of k of n stocks. The average reward over all subsamples is recorded as the agent performance for the purposes of training.
+
+Testing is carried out in a similar manner. On the testing set k stocks are randomly sampled TRIALS = 100 times. For each configuration, each agent backtests their strategy on the sub batch of data. This yeilds paired sample data which can then be used to compare whether one agent outperforms another by used of a t-test.
+
+### CAPM portfolio
+
+The capital asset pricing model agent seeks to build a portfolio maximizing returns while minimizing risk. Returns for each (ith) stock are calculated based on the daily closing values.
+<p align="center">
+<img src="https://render.githubusercontent.com/render/math?math=K_{i}^t=\frac{Z_i^{t%2B1}-Z_i^t}{Z_i^t}.">
+</p>  
+Here, the matrix K is formed each trading day from the previous T = 64 days of data. The matrix K is then used to calculate the expected returns and covariance matrix for the ensemble of stocks.  
+<p align="center">
+<img src="https://render.githubusercontent.com/render/math?math=\mu=\frac1T\sum_tK^t.">
+</p>
+<p align="center">
+<img src="https://render.githubusercontent.com/render/math?math=\Sigma=\frac1T\sum_t(K^t-\mu)(K^t-mu)^{tr}.">
+</p>
+Then, given a risk free return rate r, CAPM then selects the portfolio weight w maximizing
+<p align="center">
+<img src="https://render.githubusercontent.com/render/math?math=\frac{w^{tr}\mu-r}{w^{tr}\Sigma{w}}">
+</p>
+with the constraint that all weights are non-negative. Here, we set the annual risk free return to 2%, so, at an average of 253 trading days  r is defined by the daily risk free return.
+
+### MVP portfolio
+
+The minimum variance portfolio agent builds a portfolio minimizing the risk. With covariance defined as above MVP selects the portfolio w maximizing
+<p align="center">
+<img src="https://render.githubusercontent.com/render/math?math=w^{tr}\Sigma{w}">
+</p>
+with the constraint that all weights are non-negative.
