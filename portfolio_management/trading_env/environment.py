@@ -17,7 +17,8 @@ class TradingEnv(gym.Env):
     '''
     metadata = {'render.modes': ['human']}
     def __init__(self,stock_data,
-                 window_size=64,trading_cost=2.5e-3,
+                 train_noise = 0,
+                 window_size=50,trading_cost=2.5e-3,
                  interest_rate=8e-5,portfolio_value=1e6):
         
         #data
@@ -30,6 +31,9 @@ class TradingEnv(gym.Env):
 
         # Use closing prices for trading values:
         self.price_idx = -1
+
+        # Training noise to prevent overfitting
+        self.train_noise = train_noise 
 
         #parameters
         self.window_size=window_size
@@ -182,11 +186,16 @@ class TradingEnv(gym.Env):
         '''
 
         window_stock_data = self.stock_data[:, self._idx-self.window_size+1:self._idx+1]
-        #Normalize by timed prices:
+        # Add noise during training
         X = window_stock_data
+        if self.train_noise > 0:
+            X = tf.convert_to_tensor([
+                x + self.train_noise*np.std(x)*np.random.randn(*x.shape) for x in X])
+        #Normalize by timed prices:        
         X = tf.transpose(X,(2,1,0))
         X = X / X[-1,0,:]
         X = tf.transpose(X,(2,1,0))
+
 
         #econ_data = self.econ_data[self._idx]
         #econ_data = self.econ_data[0]

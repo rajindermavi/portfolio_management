@@ -11,7 +11,8 @@ def agent_loss(env,agent,dsct = 1):
         action,raw_action=agent.act(obs,last_raw_action)
         obs,reward,done,_=env.step(action)
         last_raw_action=raw_action
-        total_loss-= dsct * reward
+        total_loss *= dsct
+        total_loss -= reward
     return total_loss  
 
 

@@ -4,7 +4,7 @@ from tensorflow.keras import layers, losses, optimizers
 import numpy as np
 
 class Model(tf.keras.Model):
-    def __init__(self,window_size=64):
+    def __init__(self,window_size=50):
         super().__init__(self)
         
         #self.n_stocks = n_stocks
@@ -17,7 +17,9 @@ class Model(tf.keras.Model):
         self.build_layers()
 
     def build_layers(self):
-        
+        stddev = 0.025
+        self.noise_layer = layers.GaussianNoise(stddev)
+
         filters_1=2
         kernel_size_1 = (1,3)
         self.conv_layer_1 = layers.Conv2D(filters_1,
@@ -59,8 +61,8 @@ class Model(tf.keras.Model):
 
     def call(self,input_data,last_raw_action):
         ''' '''
-
-        x = self.conv_layer_1(input_data)
+        x = self.noise_layer(input_data)
+        x = self.conv_layer_1(x)
         x = self.activation_layer_1(x)
         x = self.batch_norm_layer_1(x)
         x = self.conv_layer_2(x)
@@ -83,7 +85,7 @@ class ScaleLayer(layers.Layer):
  
 class DPM_Agent():
     name = "DPM_Agent"
-    def __init__(self,window_size=64):
+    def __init__(self,window_size=50):
 
 
         self.ls = optimizers.schedules.PolynomialDecay(2e-2,1000,
