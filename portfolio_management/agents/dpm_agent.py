@@ -1,6 +1,6 @@
 
 import tensorflow as tf
-from tensorflow.keras import layers, losses, optimizers
+from tensorflow.keras import layers, losses, optimizers, regularizers
 import numpy as np
 
 class Model(tf.keras.Model):
@@ -16,9 +16,7 @@ class Model(tf.keras.Model):
 
         self.build_layers()
 
-    def build_layers(self):
-        stddev = 0.025
-        self.noise_layer = layers.GaussianNoise(stddev)
+    def build_layers(self): 
 
         filters_1=2
         kernel_size_1 = (1,3)
@@ -27,6 +25,8 @@ class Model(tf.keras.Model):
                                      name='conv1',
                                      padding='valid',
                                      activation='linear',
+                                     kernel_regularizer=regularizers.l1(1e-1),
+                                     bias_regularizer=regularizers.l1(1e-1),
                                      kernel_initializer = 'he_normal')
         self.activation_layer_1 = layers.ELU(name='act1')
         self.batch_norm_layer_1 = layers.BatchNormalization(name='bn1')
@@ -38,6 +38,8 @@ class Model(tf.keras.Model):
                                      name='conv2',
                                      padding='valid',
                                      activation='linear',
+                                     kernel_regularizer=regularizers.l1(1e-1),
+                                     bias_regularizer=regularizers.l1(1e-1),
                                      kernel_initializer = 'he_normal')
         self.activation_layer_2 = layers.LeakyReLU(name='act2')
         self.batch_norm_layer_2 = layers.BatchNormalization(name='bn2')
@@ -49,6 +51,8 @@ class Model(tf.keras.Model):
                                      name = 'conv3',
                                      padding='valid',
                                      activation='linear',
+                                     kernel_regularizer=regularizers.l1(1e-1),
+                                     bias_regularizer=regularizers.l1(1e-1),
                                      kernel_initializer = 'he_normal') 
 
         
@@ -60,9 +64,8 @@ class Model(tf.keras.Model):
         self.softmax_layer = layers.Softmax() 
 
     def call(self,input_data,last_raw_action):
-        ''' '''
-        x = self.noise_layer(input_data)
-        x = self.conv_layer_1(x)
+        ''' ''' 
+        x = self.conv_layer_1(input_data)
         x = self.activation_layer_1(x)
         x = self.batch_norm_layer_1(x)
         x = self.conv_layer_2(x)
@@ -74,6 +77,9 @@ class Model(tf.keras.Model):
         y2 = self.weighted_vec2(last_raw_action)
         x = self.average_layer([y1,y2])
         return x
+
+
+
                
 class ScaleLayer(layers.Layer):
     def __init__(self):
