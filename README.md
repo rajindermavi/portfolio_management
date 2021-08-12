@@ -9,7 +9,6 @@ There are three branches associated to this repository:
 
 * **interactive_implementation** - Implements an interactive streamlit app, the app allows users to select a date range and set of stocks. [Give the interactive app a try.](https://mavi-portfolio-management.herokuapp.com/)
 
-* **pm_with_nlp** - (In progress) The goal of this branch is to incorporate news data to the deep portfolio management algorithm.
 
 ## Details about the trading agents
 
@@ -74,7 +73,13 @@ For the sake of stability, we utilize a mollified reward function
 A custom training loop is implemented using TensorFlow's GradientTape method and Adam optimizer with negative of the reward as the loss function. To prevent overtraining, a custom call back method breaks training when the performance on the validation set ceases to improve or degrades.
 
 ###### __Batching and Subsampling__
-Overfitting is a key pitfall in maching learning. Aside from the standard callback discussed above, an extra precaution suited to the nature of the present training process is helpful. Data is gathered from n = 36 stocks over a period of years (2000 - 2020). The 2000 - 2018 data is used for training, the 2019 data is used for validation, and the 2020 data is used for testing. The training data is partitioned into 40 training episodes. For every epoch and episode a random subset of k = 10 stocks is selected for training. This is to avoid overfitting to the gains or losses of a particular stock over a particular period.
+Overfitting is a key pitfall in maching learning. Aside from the standard callback discussed above, the additional procedures are utilized. 
+
+Data is gathered from n = 36 stocks over a period of years (2000 - 2020). The 2000 - 2018 data is used for training, the 2019 data is used for validation, and the 2020 data is used for testing. The training data is partitioned into 40 training episodes. 
+
+To prevent overfitting to the behavior of particular stocks for a particular period. 
+* For every epoch and episode a random subset of k = 10 stocks is selected for training. 
+* Gaussian noise is added to training data for each step in the training process. 
 
 ###### __Performance__
 In a similar vein, the performance on the validation set is measured by backtesting a random subset of k of n stocks. The average reward over all subsamples is recorded as the agent performance for the purposes of training.
