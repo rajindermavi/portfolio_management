@@ -32,9 +32,6 @@ class GetFredArchive():
         return fred_df
       
 class GetYFArchive(): 
-    def __init__(self):  
-        #self.configs = json.load(open('.configs/yahoo_financial.json', 'r')) 
-        pass
     
     def data_dict(self,raw_data,symbols):
         data = {}
@@ -55,10 +52,6 @@ class GetYFArchive():
         return data
         
     def get(self,start,end,symbols,freq):
-        #start = self.configs_stock['start_date']
-        #end = self.configs_stock['end_date']
-        #symbols = self.configs_stock['symbols']
-        #freq = self.configs_stock['freq']
         
         yf = YahooFinancials(symbols)
         raw_data = yf.get_historical_price_data(start_date=start, 

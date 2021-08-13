@@ -68,6 +68,7 @@ class TradingEnv(gym.Env):
         self._portfolio_weights = None
         self._portfolio_value = None
         self.portfolio_value_hist = None
+        self.portfolio_weights_history = None
         self.rewards_hist = None
         self.action_space = spaces.Box(
             low=0,
@@ -105,6 +106,7 @@ class TradingEnv(gym.Env):
         self.portfolio_value_hist = [self._initial_portfolio_value]
         self.rewards_hist = [0]
         self.refi_costs = []
+        self.portfolio_weights_history = [self._initial_portfolio]
 
         return self._get_observation()
 
@@ -172,6 +174,7 @@ class TradingEnv(gym.Env):
         self.portfolio_value_hist.append(self._portfolio_value)
         # record the post step portfolio weights
         self._portfolio_weights = w_poststep
+        self.portfolio_weights_history.append(self._portfolio_weights)
 
         # calculate reward 
         reward = (tf.math.log(poststep_portfolio_value / prestep_portfolio_value))
