@@ -19,10 +19,10 @@ class GetArchive():
              
              
     def load_configs(self):
-        configs_file = './get_raw_data/configs/get_raw_data_configs.json'
+        configs_file = 'yahoo.json'
         with open(configs_file,'r') as cf:
             configs = json.load(cf) 
-            self.yf_config = configs['yahoo'] 
+            self.yf_config = configs
 
     def get_yf(self):
         start = self.yf_config['start_date']

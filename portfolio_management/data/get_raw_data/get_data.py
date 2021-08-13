@@ -8,7 +8,11 @@ class GetYFArchive():
 
         for symbol in symbols:
             
-            prices = pd.DataFrame(raw_data[symbol]['prices']).drop('date', axis = 1)
+            prices = pd.DataFrame(raw_data[symbol]['prices'])
+            if 'formatted_date' not in prices.columns:
+                continue
+            if 'date' in prices.columns:
+                prices.drop('date', axis = 1,inplace=True)
             prices['Date'] = pd.to_datetime(prices['formatted_date'])
             prices.drop(columns = ['formatted_date'], inplace = True)
             prices.set_index(['Date'],inplace = True)
@@ -23,7 +27,7 @@ class GetYFArchive():
         
     @classmethod    
     def get(cls,start,end,symbols,freq): 
-        
+        #symbols = symbols[:10]
         yf = YahooFinancials(symbols)
         raw_data = yf.get_historical_price_data(start_date=start, 
                                                   end_date=end, 
