@@ -6,13 +6,10 @@ import numpy as np
 class Model(tf.keras.Model):
     def __init__(self,window_size=50):
         super().__init__(self)
-        
-        #self.n_stocks = n_stocks
-        #self.n_stock_feats = n_stock_feats
+         
         self.window_size = window_size 
 
         self.cash_bias = 0.5 * np.ones((1,1,1)) 
-        #self._w = np.zeros((n_stocks,1,1)) 
 
         self.build_layers()
 
@@ -25,8 +22,8 @@ class Model(tf.keras.Model):
                                      name='conv1',
                                      padding='valid',
                                      activation='linear',
-                                     kernel_regularizer=regularizers.l1(1e-1),
-                                     bias_regularizer=regularizers.l1(1e-1),
+                                     kernel_regularizer=regularizers.l1(1e-2),
+                                     bias_regularizer=regularizers.l1(1e-2),
                                      kernel_initializer = 'he_normal')
         self.activation_layer_1 = layers.ELU(name='act1')
         self.batch_norm_layer_1 = layers.BatchNormalization(name='bn1')
@@ -38,8 +35,8 @@ class Model(tf.keras.Model):
                                      name='conv2',
                                      padding='valid',
                                      activation='linear',
-                                     kernel_regularizer=regularizers.l1(1e-1),
-                                     bias_regularizer=regularizers.l1(1e-1),
+                                     kernel_regularizer=regularizers.l1(1e-2),
+                                     bias_regularizer=regularizers.l1(1e-2),
                                      kernel_initializer = 'he_normal')
         self.activation_layer_2 = layers.LeakyReLU(name='act2')
         self.batch_norm_layer_2 = layers.BatchNormalization(name='bn2')
@@ -51,8 +48,8 @@ class Model(tf.keras.Model):
                                      name = 'conv3',
                                      padding='valid',
                                      activation='linear',
-                                     kernel_regularizer=regularizers.l1(1e-1),
-                                     bias_regularizer=regularizers.l1(1e-1),
+                                     kernel_regularizer=regularizers.l1(1e-2),
+                                     bias_regularizer=regularizers.l1(1e-2),
                                      kernel_initializer = 'he_normal') 
 
         
@@ -94,8 +91,8 @@ class DPM_Agent():
     def __init__(self,window_size=50):
 
 
-        self.ls = optimizers.schedules.PolynomialDecay(5e-2,10000,
-                                                       end_learning_rate=1e-5)
+        self.ls = optimizers.schedules.PolynomialDecay(1e-2,1000,
+                                                       end_learning_rate=1e-4)
         self.opt = optimizers.Adam(learning_rate=self.ls,clipnorm=1.0) 
         self.model = Model(window_size=window_size) 
 
