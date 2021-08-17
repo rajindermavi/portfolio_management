@@ -15,15 +15,15 @@ class Model(tf.keras.Model):
 
     def build_layers(self): 
 
-        filters_1=2
+        filters_1=8
         kernel_size_1 = (1,3)
         self.conv_layer_1 = layers.Conv2D(filters_1,
                                      kernel_size_1,
                                      name='conv1',
                                      padding='valid',
                                      activation='linear',
-                                     kernel_regularizer=regularizers.l1(1e-2),
-                                     bias_regularizer=regularizers.l1(1e-2),
+                                     kernel_regularizer=regularizers.l1(1e-8),
+                                     bias_regularizer=regularizers.l1(1e-8),
                                      kernel_initializer = 'he_normal')
         self.activation_layer_1 = layers.ELU(name='act1')
         self.batch_norm_layer_1 = layers.BatchNormalization(name='bn1')
@@ -35,8 +35,6 @@ class Model(tf.keras.Model):
                                      name='conv2',
                                      padding='valid',
                                      activation='linear',
-                                     kernel_regularizer=regularizers.l1(1e-2),
-                                     bias_regularizer=regularizers.l1(1e-2),
                                      kernel_initializer = 'he_normal')
         self.activation_layer_2 = layers.LeakyReLU(name='act2')
         self.batch_norm_layer_2 = layers.BatchNormalization(name='bn2')
@@ -48,8 +46,6 @@ class Model(tf.keras.Model):
                                      name = 'conv3',
                                      padding='valid',
                                      activation='linear',
-                                     kernel_regularizer=regularizers.l1(1e-2),
-                                     bias_regularizer=regularizers.l1(1e-2),
                                      kernel_initializer = 'he_normal') 
 
         
@@ -74,9 +70,6 @@ class Model(tf.keras.Model):
         y2 = self.weighted_vec2(last_raw_action)
         x = self.average_layer([y1,y2])
         return x
-
-
-
                
 class ScaleLayer(layers.Layer):
     def __init__(self):
@@ -91,16 +84,14 @@ class DPM_Agent():
     def __init__(self,window_size=50):
 
 
-        self.ls = optimizers.schedules.PolynomialDecay(1e-2,1000,
-                                                       end_learning_rate=1e-4)
+        self.ls = optimizers.schedules.PolynomialDecay(7e-2,10000,
+                                                       end_learning_rate=1e-5)
         self.opt = optimizers.Adam(learning_rate=self.ls,clipnorm=1.0) 
         self.model = Model(window_size=window_size) 
 
-          
     def act(self,*args):
         obs = args[0]
         last_action = args[1]
         raw_action = self.model(tf.convert_to_tensor([obs]),last_action)
         action = self.model.softmax_layer(raw_action)
         return action, raw_action
-

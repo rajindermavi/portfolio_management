@@ -7,8 +7,10 @@ class GetYFArchive():
         data = {}
 
         for symbol in symbols:
-            
-            prices = pd.DataFrame(raw_data[symbol]['prices'])
+            try:
+                prices = pd.DataFrame(raw_data[symbol]['prices'])
+            except:
+                continue
             if 'formatted_date' not in prices.columns:
                 continue
             if 'date' in prices.columns:

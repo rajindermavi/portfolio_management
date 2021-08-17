@@ -9,6 +9,20 @@ There are three branches associated to this repository:
 
 * **interactive_implementation** - Implements an interactive streamlit app, the app allows users to select a date range and set of stocks. [Give the interactive app a try.](https://mavi-portfolio-management.herokuapp.com/)
 
+## How to
+
+#### Get Data
+
+* portfolio_management/data/get_stock_list.ipynb: Gets list of stock symbols in the SP500 since 2011
+
+* portfolio_management/data/run_get_archive.ipynb: runs get_archive.py to get trading data for symbols collected above from 2011 to 2020 
+*Data is stored at portfolio_management/data/archive_data/yf_data.dill*
+
+#### Training / testing
+
+* portfolio_management/dpm_agent_training.ipynb: Trains DeepPortfolio on data from 2011 to 2018. Data from 2019 is used as validation in training.
+
+* portfolio_management/agent_comparison.ipynb: Compares DeepPortfolio against classical agents using 2020 dataset.
 
 ## Details about the trading agents
 
