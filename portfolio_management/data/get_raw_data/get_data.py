@@ -11,15 +11,21 @@ class GetYFArchive():
                 prices = pd.DataFrame(raw_data[symbol]['prices'])
             except:
                 continue
-            if 'formatted_date' not in prices.columns:
+            # date field is raw, we drop it.
+            try:
+                 prices.drop('date', axis = 1,inplace=True)
+            except:
                 continue
-            if 'date' in prices.columns:
-                prices.drop('date', axis = 1,inplace=True)
-            prices['Date'] = pd.to_datetime(prices['formatted_date'])
+            # Formatted date is string "yyyy-mm-dd", we convert to datetime format
+            try:
+                prices['Date'] = pd.to_datetime(prices['formatted_date'])
+            except:
+                continue
+            # Drop Date string and set Date to index.
             prices.drop(columns = ['formatted_date'], inplace = True)
             prices.set_index(['Date'],inplace = True)
-    
-
+ 
+            # Add prices DataFrame to dictionary
             data[symbol] = prices
         
             data[symbol].fillna(0,inplace = True)

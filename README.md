@@ -15,12 +15,12 @@ There are three branches associated to this repository:
 
 * portfolio_management/data/get_stock_list.ipynb: Gets list of stock symbols in the SP500 since 2011
 
-* portfolio_management/data/run_get_archive.ipynb: runs get_archive.py to get trading data for symbols collected above from 2011 to 2020 
+* portfolio_management/data/run_get_archive.ipynb: runs get_archive.py to get trading data for symbols collected above from 2000 to 2020 
 *Data is stored at portfolio_management/data/archive_data/yf_data.dill*
 
 #### Training / testing
 
-* portfolio_management/dpm_agent_training.ipynb: Trains DeepPortfolio on data from 2011 to 2018. Data from 2019 is used as validation in training.
+* portfolio_management/dpm_agent_training.ipynb: Trains DeepPortfolio on data from 2000 to 2018. Data from 2019 is used as validation in training.
 
 * portfolio_management/agent_comparison.ipynb: Compares DeepPortfolio against classical agents using 2020 dataset.
 
@@ -89,7 +89,7 @@ A custom training loop is implemented using TensorFlow's GradientTape method and
 ###### __Batching and Subsampling__
 Overfitting is a key pitfall in maching learning. Aside from the standard callback discussed above, the additional procedures are utilized. 
 
-Data is gathered from n = 36 stocks over a period of years (2000 - 2020). The 2000 - 2018 data is used for training, the 2019 data is used for validation, and the 2020 data is used for testing. The training data is partitioned into 40 training episodes. 
+Data is gathered from stocks over a period of years (2000 - 2020). The 2000 - 2018 data is used for training, the 2019 data is used for validation, and the 2020 data is used for testing. The training data is partitioned into 40 training episodes. 
 
 To prevent overfitting to the behavior of particular stocks for a particular period. 
 * For every epoch and episode a random subset of k = 10 stocks is selected for training. 
@@ -121,7 +121,7 @@ with the constraint that all weights are non-negative. Here, we set the annual r
 
 ### MVP portfolio
 
-The minimum variance portfolio agent builds a portfolio minimizing the risk. With covariance defined as above MVP selects the portfolio w maximizing
+The minimum variance portfolio agent builds a portfolio minimizing the risk. With covariance defined as above MVP selects the portfolio w minimizing
 <p align="center">
 <img src="https://render.githubusercontent.com/render/math?math=w^{tr}\Sigma{w}">
 </p>

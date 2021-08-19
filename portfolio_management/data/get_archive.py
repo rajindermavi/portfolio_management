@@ -44,6 +44,10 @@ if __name__ == "__main__":
     print(f'Saving yahoo finance archive at {save_yf}.')
     with open(save_yf, "wb") as dill_file:
         dill.dump(archive.yf_data, dill_file)
-    
+
+    symbols = archive.yf_data['Symbol'].unique()
+
+    print(symbols)
+    print(f'Number of symbols: {len(symbols)}')
     
     
