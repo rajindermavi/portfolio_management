@@ -13,12 +13,14 @@ There are three branches associated to this repository:
 
 #### Get Data
 
-* portfolio_management/data/get_stock_list.ipynb: Gets list of stock symbols in the SP500 since 2011
+* portfolio_management/data/get_stock_list.ipynb: Gets list of stock symbols in the SP500 since 2000
 
 * portfolio_management/data/run_get_archive.ipynb: runs get_archive.py to get trading data for symbols collected above from 2000 to 2020 
 *Data is stored at portfolio_management/data/archive_data/yf_data.dill*
 
 #### Training / testing
+
+* portfolio_management/test_training_synth_data.ipynb: Creates simple noisy training and validation synthetic data. Demonstrate optimal training on synthetic data. 
 
 * portfolio_management/dpm_agent_training.ipynb: Trains DeepPortfolio on data from 2000 to 2018. Data from 2019 is used as validation in training.
 
