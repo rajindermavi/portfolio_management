@@ -18,7 +18,7 @@ def agent_loss(env,agent,dsct = 1):
 
 TRADING_DAYS_PER_YEAR = 253
 
-def sampled_agent_reward(Env,data,agents,n_group_size,trials):
+def sampled_agent_reward(Env,data,agents,n_group_size,trials,dsct = 1):
 
     n_stocks = data.shape[0]
 
@@ -33,7 +33,7 @@ def sampled_agent_reward(Env,data,agents,n_group_size,trials):
 
         for agent in agents:
 
-            loss = agent_loss(env,agent)     
+            loss = agent_loss(env,agent,dsct = dsct)     
 
             avg_gain = -TRADING_DAYS_PER_YEAR*loss/(env._end_tick-env._start_tick)  
 
