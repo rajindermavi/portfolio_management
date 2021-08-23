@@ -89,7 +89,7 @@ class DPM_Agent():
 
 
         self.ls = optimizers.schedules.PolynomialDecay(5e-3,1000,
-                                                       end_learning_rate=3e-4)
+                                                       end_learning_rate=1e-5)
         self.opt = optimizers.Adam(learning_rate=self.ls,clipnorm=1.0) 
         self.model = Model(window_size=window_size) 
 
