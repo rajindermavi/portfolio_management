@@ -27,10 +27,10 @@ class TradingEnv(gym.Env):
         # Data has dimensions:
         # 0: Stocks
         # 1: Time series
-        # 2: Features: (high, low, open, close, volume)
+        # 2: Features: (high, low, open, close)
 
         # Use closing prices for trading values:
-        self.price_idx = -2
+        self.price_idx = -1
 
         # Training noise to prevent overfitting
         self.train_noise = train_noise 
@@ -190,8 +190,9 @@ class TradingEnv(gym.Env):
 
         window_stock_data = self.stock_data[:, self._idx-self.window_size+1:self._idx+1]
         # Add noise during training
-        X = window_stock_data[:,:,:-1]
-        vol = window_stock_data[:,:,-1:]
+        X = window_stock_data
+        #X = window_stock_data[:,:,:-1]
+        #vol = window_stock_data[:,:,-1:]
         if self.train_noise > 0:
             X = tf.convert_to_tensor([
                 x + self.train_noise*np.std(x)*np.random.randn(*x.shape) for x in X])
@@ -199,6 +200,6 @@ class TradingEnv(gym.Env):
         X = tf.transpose(X,(2,1,0))
         X = X / X[-1,0,:]
         X = tf.transpose(X,(2,1,0))
-        X = tf.concat([X,vol],axis = 2)
+        #X = tf.concat([X,vol],axis = 2)
  
         return X 
